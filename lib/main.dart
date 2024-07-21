@@ -4,11 +4,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   runApp(MaterialApp(
     theme: ThemeData.dark().copyWith(
-        appBarTheme: const AppBarTheme(backgroundColor: Color(0xFF0A0E21)),
-        navigationBarTheme:
-            const NavigationBarThemeData(backgroundColor: Color(0xFF0A0E21)),
-        primaryColor: const Color(0xFF0A0E21),
-        scaffoldBackgroundColor: const Color(0xFF0A0E21)),
+      appBarTheme: const AppBarTheme(backgroundColor: Color(0xFF0A0E21)),
+      navigationBarTheme: const NavigationBarThemeData(backgroundColor: Color(0xFF0A0E21)),
+      primaryColor: const Color(0xFF0A0E21),
+      scaffoldBackgroundColor: const Color(0xFF0A0E21),
+    ),
     home: const TemperatureConversion(),
   ));
 }
@@ -21,8 +21,8 @@ class TemperatureConversion extends StatefulWidget {
 }
 
 class _TemperatureConversionState extends State<TemperatureConversion> {
-  String _unitType = '°Celcius';
-  final List<String> _units = ['°Celcius', '°Ferneight'];
+  String _unitType = '°Celsius';
+  final List<String> _units = ['°Celsius', '°Fahrenheit'];
   final TextEditingController _controller = TextEditingController();
   String _resultValue = '';
   List<String> _history = [];
@@ -49,14 +49,14 @@ class _TemperatureConversionState extends State<TemperatureConversion> {
     double input = double.tryParse(_controller.text) ?? 0.0;
     double result;
 
-    if (_unitType == '°Celcius') {
+    if (_unitType == '°Celsius') {
       result = input * 9 / 5 + 32;
       setState(() {
         _resultValue = '$input °C = ${result.toStringAsFixed(2)} °F';
         _history.insert(0, _resultValue);
         _saveHistory();
       });
-    } else if (_unitType == '°Ferneight') {
+    } else if (_unitType == '°Fahrenheit') {
       result = (input - 32) * 5 / 9;
       setState(() {
         _resultValue = '$input °F = ${result.toStringAsFixed(2)} °C';
@@ -78,26 +78,9 @@ class _TemperatureConversionState extends State<TemperatureConversion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: const Color.fromARGB(255, 156, 34, 34),
       appBar: AppBar(
-        title: const Text(
-          'Temperature Converter',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: false,
+        title: const Text('Temperature Converter'),
         backgroundColor: Colors.teal,
-        elevation: 0.0,
-        // leading: IconButton(
-        //   icon: const Icon(
-        //     Icons.arrow_back,
-        //     color: Colors.white,
-        //   ),
-        //   onPressed: () {
-        //     Navigator.of(context).popUntil((route) => route.isFirst);
-        //   },
-        // ),
       ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
@@ -112,140 +95,53 @@ class _TemperatureConversionState extends State<TemperatureConversion> {
                 child: Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      TextFormField(
-                        controller: _controller,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true),
-                        decoration: InputDecoration(
-                          disabledBorder: InputBorder.none,
-                          hintText: _unitType == '°Celcius' ? "°C" : "°F",
-                          labelText: "Enter Temperature in (°C or °F)",
-                          suffixIcon: DropdownButton<String>(
-                            value: _unitType,
-                            items: _units.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            onChanged: (String? value) {
-                              setState(() {
-                                _unitType = value!;
-                              });
-                            },
-                            underline: Container(),
-                          ),
-                        ),
+                      DropdownButton<String>(
+                        value: _unitType,
+                        dropdownColor: Colors.teal,
+                        items: _units.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String? value) {
+                          setState(() {
+                            _unitType = value!;
+                          });
+                        },
                       ),
                       const SizedBox(height: 20),
-                      if (orientation == Orientation.portrait) ...[
-                        // ElevatedButton(
-                        //   onPressed: _convertTemperature,
-                        //   style: ButtonStyle(
-                        //     backgroundColor:
-                        //         WidgetStateProperty.all<Color>(Colors.red),
-                        //     padding: WidgetStateProperty.all<EdgeInsets>(
-                        //       const EdgeInsets.symmetric(
-                        //           horizontal: 20, vertical: 15),
-                        //     ),
-                        //     textStyle: WidgetStateProperty.all<TextStyle>(
-                        //       const TextStyle(
-                        //           fontSize: 18, fontWeight: FontWeight.bold),
-                        //     ),
-                        //     shape:
-                        //         WidgetStateProperty.all<RoundedRectangleBorder>(
-                        //       RoundedRectangleBorder(
-                        //         borderRadius: BorderRadius.circular(10),
-                        //       ),
-                        //     ),
-                        //   ),
-                        //   child: const Text(
-                        //     'Convert',
-                        //     style: TextStyle(color: Colors.white),
-                        //   ),
-                        // ),
-
-                        const SizedBox(height: 20),
-                        Container(
-                          color: const Color.fromARGB(47, 12, 159, 227),
-                          padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                          child: Column(
-                            children: [
-                              const Text(
-                                'Results',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.underline),
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                _resultValue,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ],
+                      TextFormField(
+                        controller: _controller,
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        decoration: InputDecoration(
+                          hintText: _unitType == '°Celsius' ? "Enter Temperature in °C" : "Enter Temperature in °F",
+                          labelText: "Temperature",
+                          labelStyle: TextStyle(color: Colors.teal),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.teal),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.teal),
                           ),
                         ),
-                      ] else ...[
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              onPressed: _convertTemperature,
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    WidgetStateProperty.all<Color>(Colors.teal),
-                                padding: WidgetStateProperty.all<EdgeInsets>(
-                                  const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 15),
-                                ),
-                                textStyle: WidgetStateProperty.all<TextStyle>(
-                                  const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                shape: WidgetStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                              ),
-                              child: const Text(
-                                'Calculate',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            Container(
-                              color: const Color(0xFF0A0E21),
-                              padding:
-                                  const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                              margin: const EdgeInsets.all(30),
-                              child: Column(
-                                children: [
-                                  const Text(
-                                    'Results',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        decoration: TextDecoration.underline),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Text(
-                                    _resultValue,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                        style: TextStyle(color: Colors.teal),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: _convertTemperature,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal,
                         ),
-                      ]
+                        child: const Text('Convert'),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        _resultValue,
+                        style: const TextStyle(fontSize: 20, color: Colors.teal),
+                      ),
                     ],
                   ),
                 ),
@@ -253,28 +149,6 @@ class _TemperatureConversionState extends State<TemperatureConversion> {
             },
           );
         },
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
-        ),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          iconSize: 40.0,
-          selectedItemColor: Colors.blue,
-          unselectedItemColor: Colors.grey,
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.history), label: 'History'),
-          ],
-          onTap: (index) {
-            if (index == 1) {
-              _goToHistory(context);
-            }
-          },
-        ),
       ),
     );
   }
@@ -289,55 +163,41 @@ class TemperatureConversionHistory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Temperature Conversion History',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.blue,
-        elevation: 0.0,
+        title: const Text('Temperature Conversion History'),
+        backgroundColor: Colors.teal,
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.of(context).pop();
           },
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 20.0),
+        padding: const EdgeInsets.all(20),
         child: history.isEmpty
             ? Center(
-                child: Text(
-                  'No history available',
-                  style: TextStyle(fontSize: 18, color: Colors.grey[700]),
-                ),
-              )
+          child: Text('No history available', style: TextStyle(fontSize: 18, color: Colors.grey[700])),
+        )
             : ListView.builder(
-                itemCount: history.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5.0),
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 4.0,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Text(
-                      history[index],
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  );
-                },
+          itemCount: history.length,
+          itemBuilder: (context, index) {
+            return Container(
+              margin: const EdgeInsets.symmetric(vertical: 5.0),
+              padding: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.0),
+                boxShadow: const [
+                  BoxShadow(color: Colors.black26, blurRadius: 4.0, offset: Offset(0, 2)),
+                ],
               ),
+              child: Text(
+                history[index],
+                style: const TextStyle(fontSize: 16),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
