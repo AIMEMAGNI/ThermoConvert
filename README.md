@@ -19,7 +19,7 @@ A simple Flutter application that allows users to convert temperatures between C
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/temperature_conversion_app.git
+git clone https://github.com/AIMEMAGNI/ThermoConvert.git
 cd temperature_conversion_app
 ```
 
