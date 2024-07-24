@@ -6,8 +6,6 @@ A simple Flutter application that allows users to convert temperatures between C
 
 Check out the demo video of the temperature conversion app on Loom:
 
-[![Demo Video](https://cdn.loom.com/sessions/thumbnails/925338df4aa747ff8cce546aec2c7d68-00001.gif)](https://www.loom.com/share/925338df4aa747ff8cce546aec2c7d68?sid=173d478e-76a9-4b20-a964-bd89e7a09c1e)
-
 [Watch the demo video on Loom](https://www.loom.com/share/925338df4aa747ff8cce546aec2c7d68?sid=173d478e-76a9-4b20-a964-bd89e7a09c1e)
 
 
